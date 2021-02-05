@@ -69,22 +69,6 @@ public class Exercise2 {
         return encodedC;
     }
 
-    private char decodeCharLfsr(char c) {
-        boolean[] charInBitArray = char2bitArray(c);
-        boolean encoder = lsfrArr[0].getSeed()[0];
-        for(int i = 0; i < this.getLsfrArr().length; i++) {
-            LSFR current = lsfrArr[i];
-            encoder = encoder ^ current.feedbackUpdateLfsr();
-        }
-        boolean[] code = this.getLsfrArr()[0].getSeed();
-        boolean[] coef = this.getLsfrArr()[0].getCoefficients();
-        int minlen = Math.min(code.length, coef.length); //This is to allow for different length encoder than 16
-        for(int i=0; i<charInBitArray.length; i++){
-            charInBitArray[i] = charInBitArray[i] ^ code[i % minlen];
-        }
-        char encodedC = bitArray2char(charInBitArray);
-        return encodedC;
-    }
 
     private char[] encodeCharArrayLfsr(char[] chars) {
         for(int i=0; i<chars.length; i++){
@@ -99,9 +83,6 @@ public class Exercise2 {
         Exercise2 copy = new Exercise2(LSFRCopy);
         char[] textInChars = text.toCharArray();
         char[] textEncoded = encodeCharArrayLfsr(textInChars);
-        for(int i =0; i < textEncoded.length; i++) {
-            System.out.println(textEncoded[i]);
-        }
         char[] textDecoded = copy.encodeCharArrayLfsr(textEncoded);
         String decodedStr = "";
         for (int i = 0; i < textDecoded.length; i++) {
